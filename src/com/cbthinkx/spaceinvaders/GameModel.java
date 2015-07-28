@@ -30,4 +30,12 @@ public class GameModel extends Observable implements ActionListener {
 		setChanged();
 		notifyObservers();
 	}
+
+    public PlayerControler getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(PlayerControler player) {
+        this.player = player;
+    }
 }
