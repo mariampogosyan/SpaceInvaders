@@ -21,8 +21,8 @@ public class PlayerControler extends Observable {
         this.canFire = true;
         this.lives = 3;
         this.direction = Direction.STOP;
-        this.x = 325;
-        this.y = 600;
+        this.x = 0;
+        this.y = -275;
     }
     public int getScore() {
         return score;
@@ -32,17 +32,28 @@ public class PlayerControler extends Observable {
     }
     public void moveRight() {
         this.direction = Direction.RIGHT;
-        this.x = x + 2;
-        notifyObservers();
     }
     public void moveLeft() {
         this.direction = Direction.LEFT;
-        this.x = x - 2;
-        notifyObservers();
     }
     public void stopMoving() {
         this.direction = Direction.STOP;
+        setChanged();
         notifyObservers();
+    }
+    public void updatePosition() {
+        if (this.direction == Direction.RIGHT) {
+            System.out.println("RIGHT");
+            this.x = x + 5;
+            setChanged();
+            notifyObservers();
+        }
+        if (this.direction == Direction.LEFT) {
+            System.out.println("LEFT");
+            this.x = x - 5;
+            setChanged();
+            notifyObservers();
+        }
     }
     public void shootMissile() {
 

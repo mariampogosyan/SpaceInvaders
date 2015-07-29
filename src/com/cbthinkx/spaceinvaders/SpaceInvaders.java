@@ -18,10 +18,13 @@ public class SpaceInvaders extends JFrame {
     	setResizable(false);
     	setLocationRelativeTo(null);
 		setVisible(true);
-		panel = new GameView();
-		panel.setModel(new GameModel());
-		panel.setPlayer(new PlayerControler(100));
-		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new SpaceInvadersKeyEventDispatcher(panel.getModel(), panel));
+		panel = new GameView(new GameModel(new PlayerControler(100)));
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
+				new SpaceInvadersKeyEventDispatcher(
+						panel.getModel(),
+						panel
+				)
+		);
 		add(panel);
 	}
 	public static void main(String[] sa) {
