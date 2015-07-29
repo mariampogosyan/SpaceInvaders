@@ -1,6 +1,8 @@
 package com.cbthinkx.spaceinvaders;
 
-public class PlayerControler {
+import java.util.Observable;
+
+public class PlayerControler extends Observable {
     public enum Direction {
         LEFT,RIGHT,STOP
     }
@@ -13,7 +15,7 @@ public class PlayerControler {
     private int y;
 
 
-    public PlayerControler(int highScore) {
+    public PlayerControler(int highScore)  {
         this.highScore = highScore;
         this.score = 0;
         this.canFire = true;
@@ -31,13 +33,16 @@ public class PlayerControler {
     public void moveRight() {
         this.direction = Direction.RIGHT;
         this.x = x + 2;
+        notifyObservers();
     }
     public void moveLeft() {
         this.direction = Direction.LEFT;
         this.x = x - 2;
+        notifyObservers();
     }
     public void stopMoving() {
         this.direction = Direction.STOP;
+        notifyObservers();
     }
     public void shootMissile() {
 

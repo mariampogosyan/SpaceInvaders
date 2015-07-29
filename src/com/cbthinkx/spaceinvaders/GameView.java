@@ -16,6 +16,7 @@ public class GameView extends JPanel implements Observer {
 	}
 	@Override
 	public void paintComponent(Graphics G) {
+//		System.out.println("hi");
 		setBackground(Color.black);
 	}
 	@Override
@@ -37,6 +38,7 @@ public class GameView extends JPanel implements Observer {
 
 	public void setPlayer(PlayerControler player) {
 		this.player = player;
+		getPlayer().addObserver(this);
 		addKeyListener(new playerKeyListnener());
 	}
 
