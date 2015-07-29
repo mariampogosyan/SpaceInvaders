@@ -3,7 +3,6 @@ package com.cbthinkx.spaceinvaders;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -14,11 +13,10 @@ public class GameView extends JPanel implements Observer {
 	private GameModel model;
 	private PlayerControler player;
 	public GameView() {
-		setBackground(Color.BLACK);
 	}
 	@Override
 	public void paintComponent(Graphics G) {
-
+		setBackground(Color.black);
 	}
 	@Override
 	public void update(Observable o, Object arg) {
@@ -34,18 +32,16 @@ public class GameView extends JPanel implements Observer {
 	}
 
 	public PlayerControler getPlayer() {
-		return player;
+		return this.player;
 	}
 
 	public void setPlayer(PlayerControler player) {
 		this.player = player;
+		addKeyListener(new playerKeyListnener());
 	}
 
 	private class playerKeyListnener extends KeyAdapter{
-		PlayerControler player = getModel().getPlayer();
-		@Override
-		public void keyTyped(KeyEvent e) {
-		}
+		PlayerControler player = getPlayer();
 		@Override
 		public void keyPressed(KeyEvent e) {
 			int keyCode = e.getKeyCode();

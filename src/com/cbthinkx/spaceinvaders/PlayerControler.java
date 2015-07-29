@@ -19,8 +19,8 @@ public class PlayerControler {
         this.canFire = true;
         this.lives = 3;
         this.direction = Direction.STOP;
-//        this.x = middle of screen
-//        this.y =
+        this.x = 325;
+        this.y = 600;
     }
     public int getScore() {
         return score;
@@ -30,23 +30,17 @@ public class PlayerControler {
     }
     public void moveRight() {
         this.direction = Direction.RIGHT;
+        this.x = x + 2;
     }
     public void moveLeft() {
         this.direction = Direction.LEFT;
+        this.x = x - 2;
     }
     public void stopMoving() {
         this.direction = Direction.STOP;
     }
     public void shootMissile() {
 
-    }
-    public void updatePosition() {
-        if (this.direction == Direction.LEFT) {
-
-        }
-        if (this.direction == Direction.RIGHT) {
-
-        }
     }
     public void increeseScore(int points) {
         this.score = this.score + points;
@@ -77,5 +71,18 @@ public class PlayerControler {
     }
     public void setLives(int lives) {
         this.lives = lives;
+    }
+
+    @Override
+    public String toString() {
+        return "PlayerControler{" +
+                "canFire=" + canFire +
+                ", score=" + score +
+                ", highScore=" + highScore +
+                ", lives=" + lives +
+                ", direction=" + direction +
+                ", x=" + x +
+                ", y=" + y +
+                '}';
     }
 }
