@@ -16,16 +16,6 @@ public class GameView extends JPanel implements Observer {
 	public GameView() {
 		setBackground(Color.BLACK);
 	}
-	public void gameChanged() {
-
-	}
-	GameModel getModel() {
-		return this.model;
-	}
-	void setGameModel(GameModel model) {
-		this.model = model;
-		getModel().addObserver(this);		
-	}
 	@Override
 	public void paintComponent(Graphics G) {
 
@@ -40,6 +30,7 @@ public class GameView extends JPanel implements Observer {
 
 	public void setModel(GameModel model) {
 		this.model = model;
+		getModel().addObserver(this);
 	}
 
 	public PlayerControler getPlayer() {

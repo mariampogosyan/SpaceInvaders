@@ -1,9 +1,9 @@
 package com.cbthinkx.spaceinvaders.invaders;
 
+import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import com.sun.javafx.geom.Path2D;
 
 public class Invaders {
 	private int score;
@@ -18,7 +18,8 @@ public class Invaders {
 	public void updatePosition() {
 		
 	}
-	public void blowUp() {
+	public void blowUp()
+	{
 		
 	}
 	public void UpdateImage() {
