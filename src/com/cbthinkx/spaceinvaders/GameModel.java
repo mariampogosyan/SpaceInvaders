@@ -4,6 +4,7 @@ import com.cbthinkx.spaceinvaders.invaders.Invaders;
 import com.cbthinkx.spaceinvaders.missiles.Missiles;
 
 import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -37,6 +38,9 @@ public class GameModel extends Observable implements ActionListener {
 
         }
         if (this.missiles.size() != 0) {
+        	for (int i = 0; i < getArrayList().size(); i++) {
+        		getArrayList().get(i).updatePosition();
+        	}
 
         }
         if (this.isDead.size() != 0) {
@@ -46,6 +50,7 @@ public class GameModel extends Observable implements ActionListener {
     	setChanged();
     	notifyObservers();
     }
+    
 	@Override
 	public void actionPerformed(ActionEvent ae) {
         updatePositions();
@@ -58,4 +63,8 @@ public class GameModel extends Observable implements ActionListener {
     public void setPlayer(PlayerControler player) {
         this.player = player;
     }
+    public ArrayList<Missiles> getArrayList(){
+		return missiles;
+	}
+    
 }

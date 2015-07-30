@@ -11,11 +11,15 @@ import java.util.Observer;
 
 import javax.swing.JPanel;
 
+import com.cbthinkx.spaceinvaders.missiles.Missiles;
+
 public class GameView extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;
 	private static final int LIVES_STARTING_POINT = 65;
 	private GameModel model;
 	private Font invadersFont;
+	private Missiles missile;
+	private Shape missileShape;
 	public GameView(GameModel model) {
 		this.model = model;
 		this.model.addObserver(this);
@@ -52,11 +56,22 @@ public class GameView extends JPanel implements Observer {
 				50, 15,
 				10, 10
 		);
+		drawMissles(g2d);
 		g2d.setPaint(Color.GREEN);
 		g2d.fill(playerBot);
 		g2d.draw(playerBot);
-		//
 		g2d.dispose();
+	}
+	private Graphics2D drawMissles(Graphics2D g2d) {
+		if(!getModel().getArrayList().isEmpty()){
+			for(int i = 0; i < getModel().getArrayList().size(); i++) {
+				missileShape = getModel().getArrayList().get(i).getShape();				
+				g2d.setPaint(Color.WHITE);
+				g2d.fill(missileShape);
+				g2d.draw(missileShape);
+			}
+		}
+		return g2d;
 	}
 	private Graphics2D drawScore(Graphics2D g2d) {
 		g2d.setPaint(Color.WHITE);
@@ -111,10 +126,12 @@ public class GameView extends JPanel implements Observer {
 					player.moveRight();
 					break;
 				case KeyEvent.VK_SPACE :
-					// shoot missile
+					// shoot missile 
+					missile = new Missiles(getModel().getPlayer().getX(), getModel().getPlayer().getY());
+					getModel().getArrayList().add(missile);
 					player.increeseScore(10);
 					if (player.canFire()) {
-						player.shootMissile();
+					
 					}
 					break;
 			}

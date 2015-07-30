@@ -55,9 +55,6 @@ public class PlayerControler extends Observable {
             notifyObservers();
         }
     }
-    public void shootMissile() {
-
-    }
     public void increeseScore(int points) {
         this.score = this.score + points;
         if (this.score > this.highScore) {
