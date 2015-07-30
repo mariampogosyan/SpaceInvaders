@@ -5,6 +5,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
@@ -45,22 +47,25 @@ public class GameView extends JPanel implements Observer {
 		drawScore(g2d);
 		drawLives(g2d);
 		AffineTransform gat = new AffineTransform();
-		gat.translate(getWidth() / 2.0, -getHeight() / 2.0);
 		g2d.scale(1.0, -1.0);
+		gat.translate(getWidth() / 2.0, -getHeight() / 2.0);
 		g2d.transform(gat);
 		setBackground(Color.black);
-		//Draw Player
-		RoundRectangle2D playerBot = new RoundRectangle2D.Float(
-				getModel().getPlayer().getX(),
-				getModel().getPlayer().getY(),
-				50, 15,
-				10, 10
-		);
+		drawPlayer(g2d);
 		drawMissles(g2d);
-		g2d.setPaint(Color.GREEN);
-		g2d.fill(playerBot);
-		g2d.draw(playerBot);
 		g2d.dispose();
+	}
+	private Graphics2D drawPlayer(Graphics2D g2d) {
+		int x = getModel().getPlayer().getX();
+		int y = getModel().getPlayer().getY();
+		int width = getModel().getPlayer().getPlayerShip().getWidth();
+		AffineTransform transform = new AffineTransform();
+		BufferedImage bufferedImage = getModel().getPlayer().getPlayerShip();
+		transform.rotate(Math.PI, bufferedImage.getWidth()/2, bufferedImage.getHeight()/2);
+		AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
+		bufferedImage = op.filter(bufferedImage, null);
+		g2d.drawImage(bufferedImage, null, x - (width/2), y);
+		return g2d;
 	}
 	private Graphics2D drawMissles(Graphics2D g2d) {
 		if(!getModel().getArrayList().isEmpty()){
@@ -80,19 +85,31 @@ public class GameView extends JPanel implements Observer {
 		g2d.drawString(String.format("%04d", getModel().getPlayer().getScore()), 22, 50);
 		g2d.drawString("HI-SCORE", 495, 25);
 		g2d.drawString(String.format("%04d", getModel().getPlayer().getHighScore()), 535, 50);
+		g2d.setPaint(Color.GREEN);
+		g2d.drawLine(0, 60, 650, 60);
 		return g2d;
 	}
 	private Graphics2D drawLives(Graphics2D g2d) {
 		g2d.setPaint(Color.WHITE);
 		g2d.setFont(invadersFont);
 		int lives = getModel().getPlayer().getLives();
-		g2d.drawString(String.format("%02d", lives), 15, 615);
+		g2d.drawString(String.format("%02d", lives), 15, 665);
+		int width = (getModel().getPlayer().getPlayerShip().getWidth()/2) + 25;
+		AffineTransform transform = new AffineTransform();
+		BufferedImage bufferedImage = getModel().getPlayer().getPlayerShip();
+		transform.scale(0.7, 0.7);
+		AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
+		bufferedImage = op.filter(bufferedImage, null);
 		for (int x = 0; x < lives; x++) {
-			RoundRectangle2D ship = new RoundRectangle2D.Double(LIVES_STARTING_POINT + (45 * x), 605, 40, 10, 10, 10);
-			g2d.setPaint(Color.GREEN);
-			g2d.fill(ship);
-			g2d.draw(ship);
+			g2d.drawImage(
+					bufferedImage,
+					null,
+					LIVES_STARTING_POINT + (width * x),
+					640
+			);
 		}
+		g2d.setPaint(Color.GREEN);
+		g2d.drawLine(0, 635, 650, 635);
 		return g2d;
 	}
 	@Override
@@ -127,7 +144,7 @@ public class GameView extends JPanel implements Observer {
 					break;
 				case KeyEvent.VK_SPACE :
 					// shoot missile 
-					missile = new Missiles(getModel().getPlayer().getX(), getModel().getPlayer().getY());
+					missile = new Missiles(getModel().getPlayer().getX() - 1, getModel().getPlayer().getY() + 30);
 					getModel().getArrayList().add(missile);
 					player.increeseScore(10);
 					if (player.canFire()) {

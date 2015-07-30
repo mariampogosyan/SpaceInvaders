@@ -1,5 +1,6 @@
 package com.cbthinkx.spaceinvaders;
 
+import java.awt.image.BufferedImage;
 import java.util.Observable;
 
 public class PlayerControler extends Observable {
@@ -13,16 +14,18 @@ public class PlayerControler extends Observable {
     private Direction direction;
     private int x;
     private int y;
+    private BufferedImage playerShip;
 
 
-    public PlayerControler(int highScore)  {
+    public PlayerControler(int highScore, BufferedImage ship)  {
+        this.playerShip = ship;
         this.highScore = highScore;
         this.score = 0;
         this.canFire = true;
         this.lives = 3;
         this.direction = Direction.STOP;
         this.x = 0;
-        this.y = -255;
+        this.y = -280;
     }
     public int getScore() {
         return score;
@@ -45,15 +48,27 @@ public class PlayerControler extends Observable {
         if (this.direction == Direction.RIGHT) {
 //            System.out.println("RIGHT");
             this.x = x + 5;
+            if (x + (playerShip.getWidth()/2) > 325) {
+                this.x = 325 - (playerShip.getWidth()/2);
+            }
             setChanged();
             notifyObservers();
         }
         if (this.direction == Direction.LEFT) {
 //            System.out.println("LEFT");
             this.x = x - 5;
+            if (x - (playerShip.getWidth()/2) < -325) {
+                this.x = -325 + (playerShip.getWidth()/2);
+            }
             setChanged();
             notifyObservers();
         }
+    }
+    public BufferedImage getPlayerShip() {
+        return playerShip;
+    }
+    public void setPlayerShip(BufferedImage playerShip) {
+        this.playerShip = playerShip;
     }
     public void increeseScore(int points) {
         this.score = this.score + points;
