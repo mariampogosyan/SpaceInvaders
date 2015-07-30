@@ -22,7 +22,7 @@ public class PlayerControler extends Observable {
         this.lives = 3;
         this.direction = Direction.STOP;
         this.x = 0;
-        this.y = -275;
+        this.y = -255;
     }
     public int getScore() {
         return score;
@@ -43,13 +43,13 @@ public class PlayerControler extends Observable {
     }
     public void updatePosition() {
         if (this.direction == Direction.RIGHT) {
-            System.out.println("RIGHT");
+//            System.out.println("RIGHT");
             this.x = x + 5;
             setChanged();
             notifyObservers();
         }
         if (this.direction == Direction.LEFT) {
-            System.out.println("LEFT");
+//            System.out.println("LEFT");
             this.x = x - 5;
             setChanged();
             notifyObservers();
