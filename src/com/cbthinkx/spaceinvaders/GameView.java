@@ -165,22 +165,18 @@ public class GameView extends JPanel implements Observer {
 					break;
 				case KeyEvent.VK_SPACE :
 					// shoot missile 
-					if(!getModel().getMissiles().isEmpty()) {
-//						t = new Timer(1000, new ActionListener() {
-//													
-//							}
-//						});
-//						missile = new Missiles(getModel().getPlayer().getX() - 1, getModel().getPlayer().getY() + 30);
-//						getModel().getArrayList().add(missile);  				
-//				
-//						t.setRepeats(true);
-//						t.start();
-					
-				
-					} else {
+					if(getModel().getPlayer().canFire()) {
 						missile = new Missiles(getModel().getPlayer().getX() - 1, getModel().getPlayer().getY() + 30);
 						getModel().getMissiles().add(missile);
-						player.increeseScore(10);
+						getModel().getPlayer().setCanFire(false);
+						t = new Timer(1000,
+								ae -> {
+									getModel().getPlayer().setCanFire(true);
+								});
+						t.setRepeats(false);
+						t.start();
+					
+				
 					}
 				break;
 			}
