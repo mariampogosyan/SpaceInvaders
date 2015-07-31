@@ -1,6 +1,8 @@
 package com.cbthinkx.spaceinvaders;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
@@ -12,6 +14,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import com.cbthinkx.spaceinvaders.missiles.Missiles;
 
@@ -22,6 +25,7 @@ public class GameView extends JPanel implements Observer {
 	private Font invadersFont;
 	private Missiles missile;
 	private Shape missileShape;
+	private Timer t;
 	public GameView(GameModel model) {
 		this.model = model;
 		this.model.addObserver(this);
@@ -144,13 +148,24 @@ public class GameView extends JPanel implements Observer {
 					break;
 				case KeyEvent.VK_SPACE :
 					// shoot missile 
-					missile = new Missiles(getModel().getPlayer().getX() - 1, getModel().getPlayer().getY() + 30);
-					getModel().getArrayList().add(missile);
-					player.increeseScore(10);
-					if (player.canFire()) {
+					if(!getModel().getArrayList().isEmpty()) {
+//						t = new Timer(1000, new ActionListener() {
+//													
+//							}
+//						});
+//						missile = new Missiles(getModel().getPlayer().getX() - 1, getModel().getPlayer().getY() + 30);
+//						getModel().getArrayList().add(missile);  				
+//				
+//						t.setRepeats(true);
+//						t.start();
 					
+				
+					} else {
+						missile = new Missiles(getModel().getPlayer().getX() - 1, getModel().getPlayer().getY() + 30);
+						getModel().getArrayList().add(missile);
+						player.increeseScore(10);
 					}
-					break;
+				break;
 			}
 		}
 		@Override

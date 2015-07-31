@@ -18,7 +18,7 @@ public class GameModel extends Observable implements ActionListener {
     private ArrayList<Missiles> missiles;
     private ArrayList<Objects> isDead;
     private PlayerControler player;
-    private Timer playerTimer;
+    private Timer playerTimer; 
 
     public GameModel(PlayerControler player) {
         this.player = player;
@@ -39,8 +39,13 @@ public class GameModel extends Observable implements ActionListener {
         }
         if (this.missiles.size() != 0) {
         	for (int i = 0; i < getArrayList().size(); i++) {
-        		getArrayList().get(i).updatePosition();
+        		if (getArrayList().get(i).getY() > 257) {
+        			this.missiles.remove(i);        			
+        		} else {
+        			getArrayList().get(i).updatePosition();
+        		}
         	}
+        	
 
         }
         if (this.isDead.size() != 0) {

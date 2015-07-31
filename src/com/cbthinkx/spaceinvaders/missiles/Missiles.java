@@ -29,7 +29,7 @@ public class Missiles {
 	public double getY() {
 		return y;
 	}
-	public void setY(double y) {
+	public void setY(double y) {  
 		this.y = y;
 	}
 	public Shape getShape() {
@@ -37,7 +37,7 @@ public class Missiles {
 		return rec;
 	}
 	public void updatePosition() {
-		y = y+5;		
+		y = y + 10;		
 	}
 	public void blowUp()
 	{
