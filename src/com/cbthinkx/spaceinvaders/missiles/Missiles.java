@@ -32,7 +32,7 @@ public class Missiles {
 	public void setY(double y) {  
 		this.y = y;
 	}
-	public Shape getShape() {
+	public Rectangle2D getShape() {
 		rec.setRect(x, y, 1, 8);
 		return rec;
 	}

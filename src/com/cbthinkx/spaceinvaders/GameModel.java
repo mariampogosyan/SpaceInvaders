@@ -8,6 +8,7 @@ import javax.swing.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -45,6 +46,7 @@ public class GameModel extends Observable implements ActionListener {
         playerTimer.addActionListener(
                 ae -> {
                     updatePositions();
+                    hitDetection();
                 }
         );
         playerTimer.setRepeats(true);
@@ -52,6 +54,22 @@ public class GameModel extends Observable implements ActionListener {
     }
 
     public void hitDetection() {
+        for (int m = 0; m < getMissiles().size(); m++) {
+            for (int i = 0; i < getInvaders().size(); i++) {
+                int width = getInvaders().get(i).getCurrentFrame().getWidth();
+                int height = getInvaders().get(i).getCurrentFrame().getHeight();
+                Rectangle2D in = new Rectangle2D.Float(
+                        getInvaders().get(i).getX() - (width/2),
+                        getInvaders().get(i).getY(),
+                        width,
+                        height
+                );
+                if (in.contains(getMissiles().get(i).getShape())) {
+                    getMissiles().remove(m);
+                    getInvaders().remove(i);
+                }
+            }
+        }
 
     }
     public void updatePositions() {
