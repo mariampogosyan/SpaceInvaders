@@ -18,7 +18,7 @@ public class Missiles {
 	public Missiles (double x, double y){
 		this.x = x;
 		this.y = y; 
-		this.rec = new Rectangle2D.Double(x, y, 1, 3);
+		this.rec = new Rectangle2D.Double(x, y, 1, 8);
 	}
 	public double getX() {
 		return x;
@@ -39,8 +39,7 @@ public class Missiles {
 	public void updatePosition() {
 		y = y + 10;		
 	}
-	public void blowUp()
-	{
+	public void blowUp() {
 		
 	}
 	public void UpdateImage() {
