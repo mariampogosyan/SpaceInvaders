@@ -1,6 +1,9 @@
 package com.cbthinkx.spaceinvaders;
 
+import com.cbthinkx.spaceinvaders.invaders.Crab;
 import com.cbthinkx.spaceinvaders.invaders.Invaders;
+import com.cbthinkx.spaceinvaders.invaders.JellyFish;
+import com.cbthinkx.spaceinvaders.invaders.Octopus;
 import com.cbthinkx.spaceinvaders.invaders.Ship;
 import com.cbthinkx.spaceinvaders.missiles.Missiles;
 
@@ -8,7 +11,9 @@ import javax.swing.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -34,9 +39,7 @@ public class GameModel extends Observable implements ActionListener {
         randomShipTimer = new Timer(10000, null);
         randomShipTimer.addActionListener(
                 ae -> {
-                    ArrayList<BufferedImage> ship = new ArrayList<>();
-                    ship.add(this.images.get(0));
-                    Ship newShip = new Ship(ship, -400, 250);
+                    Ship newShip = new Ship(images.get(0), -400, 250);
                     invaders.add(newShip);
                 }
         );
@@ -51,6 +54,20 @@ public class GameModel extends Observable implements ActionListener {
         );
         playerTimer.setRepeats(true);
         playerTimer.start();
+        modImages();
+        createInvaders();
+    }
+    private void modImages() {
+    	for (int x = 0; x < images.size(); x++) {
+    		int width = images.get(x).getWidth();
+    		AffineTransform transform = new AffineTransform();
+    		transform.scale(0.35, 0.35);
+    		BufferedImage bufferedImage = images.get(x);
+    		transform.rotate(Math.PI, bufferedImage.getWidth() / 2, bufferedImage.getHeight() / 2);
+    		AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
+    		 bufferedImage = op.filter(bufferedImage, null);
+    		 images.set(x, bufferedImage);
+    	}
     }
 
     public void hitDetection() {
@@ -64,14 +81,44 @@ public class GameModel extends Observable implements ActionListener {
                         width,
                         height
                 );
-                if (in.contains(getMissiles().get(i).getShape())) {
+                if (in.contains(getMissiles().get(m).getShape())) {
                     getPlayer().increeseScore(getInvaders().get(i).getScore());
                     getMissiles().remove(m);
                     getInvaders().remove(i);
+                    break;
                 }
             }
         }
 
+    }
+    public void createInvaders() {
+    	int rows = 5;
+    	int columns = 11;
+    	int ySpacer = 50;
+    	int xSpacer = 45;
+    	int x = -270;
+    	int y = 180;
+     	for (int i = rows; i > 0; i--) {
+    		for (int j = 0; j < columns; j++) {
+    			x = x +  xSpacer;
+    			if (i == 5) {
+    				Octopus invader = new Octopus(images.get(5), images.get(6), x, y);
+    				invaders.add(invader);
+    			}
+    			if (i == 4 || i == 3) {
+    				Crab invader = new Crab(images.get(1), images.get(2), x, y);
+    				invaders.add(invader);
+    			}
+    			if (i == 2 || i == 1) {
+    				JellyFish invader = new JellyFish(images.get(3), images.get(4), x, y);
+    				invaders.add(invader);
+    			}
+    			System.out.println("X: " + x + " Y: " + y);
+    		}
+			y = y - ySpacer;
+			x = -270;
+    	}
+    	
     }
     public void updatePositions() {
         if (this.invaders.size() != 0) {

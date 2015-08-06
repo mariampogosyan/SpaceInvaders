@@ -4,8 +4,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Crab extends Invaders{
-    public Crab(ArrayList<BufferedImage> img, int x, int y) {
-        super(img, x, y);
+    public Crab(BufferedImage f1, BufferedImage f2, int x, int y) {
+        super(f1, f2, x, y);
         this.setScore(20);
     }
 }

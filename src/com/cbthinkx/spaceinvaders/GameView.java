@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -65,14 +66,16 @@ public class GameView extends JPanel implements Observer {
 		for (int i = 0; i < getModel().getInvaders().size(); i++) {
 			int x = getModel().getInvaders().get(i).getX();
 			int y = getModel().getInvaders().get(i).getY();
-			int width = getModel().getInvaders().get(i).getCurrentFrame().getWidth();
-			AffineTransform transform = new AffineTransform();
-			transform.scale(0.5, 0.5);
-			BufferedImage bufferedImage = getModel().getInvaders().get(i).getCurrentFrame();
-			transform.rotate(Math.PI, bufferedImage.getWidth() / 2, bufferedImage.getHeight() / 2);
-			AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
-			bufferedImage = op.filter(bufferedImage, null);
-			g2d.drawImage(bufferedImage, null, x - (width / 2), y);
+            int width1 = getModel().getInvaders().get(i).getCurrentFrame().getWidth();
+            int height = getModel().getInvaders().get(i).getCurrentFrame().getHeight();
+            Rectangle2D in = new Rectangle2D.Float(
+                    getModel().getInvaders().get(i).getX() - (width1/2),
+                    getModel().getInvaders().get(i).getY(),
+                    width1,
+                    height
+            );
+            g2d.draw(in);
+			g2d.drawImage(getModel().getInvaders().get(i).getCurrentFrame(), null, x - (width1 / 2), y);
 		}
 		return g2d;
 	}

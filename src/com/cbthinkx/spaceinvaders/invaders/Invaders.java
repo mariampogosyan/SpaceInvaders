@@ -1,6 +1,8 @@
 package com.cbthinkx.spaceinvaders.invaders;
 
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -13,18 +15,20 @@ public class Invaders {
 	private int x;
 	private int y;
 	private int row;
-	private ArrayList<BufferedImage> img;
+	private BufferedImage frame1;
+	private BufferedImage frame2;
 	private BufferedImage currentFrame;
 	private int frameNum;
 
-	public Invaders(ArrayList<BufferedImage> img, int x, int y) {
+	public Invaders(BufferedImage f1, BufferedImage f2, int x, int y) {
 		this.hitPoints = 1;
-		this.img = img;
+		this.frame1 = f1;
+		this.frame2 = f2;
 		this.x = x;
 		this.y = y;
 		this.frameNum = 0;
 		this.isAlive = true;
-		this.currentFrame = img.get(frameNum);
+		this.currentFrame = f1;
 	}
 	public void updatePosition() {
 	}
@@ -32,9 +36,14 @@ public class Invaders {
 
 	}
 	public void UpdateImage() {
-		if (frameNum == 1) frameNum = 0;
-		if (frameNum == 0) frameNum = 1;
-		this.currentFrame = img.get(frameNum);
+		if (frameNum == 1) {
+			frameNum = 0;
+			this.currentFrame = frame1;
+		}
+		if (frameNum == 0) {
+			frameNum = 1;
+			this.currentFrame = frame2;
+		}
 	}
 	public BufferedImage getCurrentFrame() {
 		return currentFrame;
