@@ -65,6 +65,7 @@ public class GameModel extends Observable implements ActionListener {
                         height
                 );
                 if (in.contains(getMissiles().get(i).getShape())) {
+                    getPlayer().increeseScore(getInvaders().get(i).getScore());
                     getMissiles().remove(m);
                     getInvaders().remove(i);
                 }
