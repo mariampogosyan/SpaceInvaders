@@ -37,7 +37,7 @@ public class Missiles {
 		return rec;
 	}
 	public void updatePosition() {
-		y = y + 10;		
+		y = y + 15;
 	}
 	public void blowUp() {
 		

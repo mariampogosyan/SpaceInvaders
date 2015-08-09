@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Observable;
+import java.util.Random;
 
 
 
@@ -29,6 +30,7 @@ public class GameModel extends Observable implements ActionListener {
     private ArrayList<BufferedImage> images;
     private Timer playerTimer;
     private Timer randomShipTimer;
+    private int bonusShipInterval;
 
     public GameModel(PlayerControler player, ArrayList<BufferedImage> img) {
         this.player = player;
@@ -36,11 +38,15 @@ public class GameModel extends Observable implements ActionListener {
         this.missiles = new ArrayList<>();
         this.isDead = new ArrayList<>();
         this.images = img;
-        randomShipTimer = new Timer(10000, null);
+        this.bonusShipInterval = new Random().nextInt(50000);
+        randomShipTimer = new Timer(bonusShipInterval, null);
         randomShipTimer.addActionListener(
                 ae -> {
                     Ship newShip = new Ship(images.get(0), -400, 250);
                     invaders.add(newShip);
+                    bonusShipInterval = new Random().nextInt(50000);
+                    while (!(bonusShipInterval > 10000)) bonusShipInterval = new Random().nextInt(50000);
+                    randomShipTimer.setDelay(bonusShipInterval);
                 }
         );
         randomShipTimer.setRepeats(true);

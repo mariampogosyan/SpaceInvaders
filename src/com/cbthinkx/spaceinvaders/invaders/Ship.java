@@ -1,7 +1,6 @@
 package com.cbthinkx.spaceinvaders.invaders;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class Ship extends Invaders {
@@ -13,7 +12,7 @@ public class Ship extends Invaders {
 
     @Override
     public void updatePosition() {
-        setX(getX() + 3);
+        setX(getX() + 4);
         if (getX() > 390) {
             setIsAlive(false);
         }
