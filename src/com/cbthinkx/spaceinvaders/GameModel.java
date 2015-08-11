@@ -26,6 +26,7 @@ public class GameModel extends Observable implements ActionListener {
     private ArrayList<Invaders> invaders;
     private ArrayList<Missiles> missiles;
     private ArrayList<Objects> isDead;
+    private ArrayList<Explosion> explosions;
     private PlayerControler player;
     private ArrayList<BufferedImage> images;
     private Timer playerTimer;
@@ -38,6 +39,7 @@ public class GameModel extends Observable implements ActionListener {
         this.invaders = new ArrayList<>();
         this.missiles = new ArrayList<>();
         this.isDead = new ArrayList<>();
+        this.explosions = new ArrayList<>();
         this.images = img;
         this.bonusShipInterval = new Random().nextInt(50000);
         randomShipTimer = new Timer(bonusShipInterval, null);
@@ -99,6 +101,8 @@ public class GameModel extends Observable implements ActionListener {
                 );
                 if (in.contains(getMissiles().get(m).getShape())) {
                     getPlayer().increeseScore(getInvaders().get(i).getScore());
+                    Explosion explode = new Explosion(getInvaders().get(i).getX(), getInvaders().get(i).getY(), images.get(7));
+                    getExplosions().add(explode);
                     getMissiles().remove(m);
                     getInvaders().remove(i);
                     break;
@@ -200,5 +204,8 @@ public class GameModel extends Observable implements ActionListener {
     }
     public ArrayList<Objects> getIsDead() {
         return isDead;
+    }
+    public ArrayList<Explosion> getExplosions() {
+        return explosions;
     }
 }

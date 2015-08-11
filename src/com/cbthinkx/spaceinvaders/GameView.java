@@ -1,17 +1,13 @@
 package com.cbthinkx.spaceinvaders;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -60,6 +56,7 @@ public class GameView extends JPanel implements Observer {
 		drawPlayer(g2d);
 		drawInvaders(g2d);
 		drawMissles(g2d);
+		drawExplosions(g2d);
 		g2d.dispose();
 	}
 	private Graphics2D drawInvaders(Graphics2D g2d) {
@@ -98,6 +95,24 @@ public class GameView extends JPanel implements Observer {
 				g2d.setPaint(Color.WHITE);
 				g2d.fill(missileShape);
 				g2d.draw(missileShape);
+			}
+		}
+		return g2d;
+	}
+	private Graphics2D drawExplosions(Graphics2D g2d) {
+		if (!getModel().getExplosions().isEmpty()) {
+			for (int i = 0; i < getModel().getExplosions().size(); i++) {
+				if (getModel().getExplosions().get(i).canDraw()) {
+					int width = getModel().getExplosions().get(i).getExplode().getWidth();
+					g2d.drawImage(
+							getModel().getExplosions().get(i).getExplode(),
+							null,
+							getModel().getExplosions().get(i).getX() - width/2,
+							getModel().getExplosions().get(i).getY()
+					);
+				} else {
+					getModel().getExplosions().remove(i);
+				}
 			}
 		}
 		return g2d;

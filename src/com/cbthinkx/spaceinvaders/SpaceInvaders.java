@@ -56,6 +56,8 @@ public class SpaceInvaders extends JFrame {
 			resources.add(ImageIO.read(imgFile));
 			imgFile = new File("res/Images/octopusInvader_2.png"); //6
 			resources.add(ImageIO.read(imgFile));
+			imgFile = new File("res/Images/explosion.png");
+			resources.add(ImageIO.read(imgFile));
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
