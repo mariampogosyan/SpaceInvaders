@@ -19,7 +19,7 @@ public class Ship extends Invaders {
     }
 
     @Override
-    public void UpdateImage() {
+    public void updateImage() {
         
     }
 }

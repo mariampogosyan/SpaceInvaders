@@ -1,13 +1,9 @@
 package com.cbthinkx.spaceinvaders.invaders;
 
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Path2D;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.Observable;
 
-
-public class Invaders {
+public class Invaders extends Observable {
 	private int score;
 	private int hitPoints;
 	private boolean isAlive;
@@ -19,7 +15,8 @@ public class Invaders {
 	private BufferedImage frame2;
 	private BufferedImage currentFrame;
 	private int frameNum;
-
+	private int count = 0;
+	boolean forward=true;
 	public Invaders(BufferedImage f1, BufferedImage f2, int x, int y) {
 		this.hitPoints = 1;
 		this.frame1 = f1;
@@ -31,16 +28,49 @@ public class Invaders {
 		this.currentFrame = f1;
 	}
 	public void updatePosition() {
+		if (count != 8 && forward) {
+			if (count == 7) {
+				moveDown();
+			}
+			moveRight();
+		} else {
+			forward = false;
+		}
+		if (count != 0 && !forward) {
+			if (count == 1) {
+				moveDown();
+			}
+			moveLeft();
+		 } else {
+			 forward = true;
+		 }
+	}	
+	public void moveDown() {
+		this.y -=10;
+	}
+	public void moveRight() {
+		count++;
+		updateImage();
+		this.x += 10;
+	}
+	public void moveLeft(){
+		count--;
+		updateImage();
+		this.x -= 10;
+	}
+	public int getRow() {
+		return this.row;		
+	}
+	public void setRow(int row) {
+		this.row = row;
 	}
 	public void blowUp() {
-
 	}
-	public void UpdateImage() {
+	public void updateImage() {
 		if (frameNum == 1) {
 			frameNum = 0;
 			this.currentFrame = frame1;
-		}
-		if (frameNum == 0) {
+		} else {
 			frameNum = 1;
 			this.currentFrame = frame2;
 		}

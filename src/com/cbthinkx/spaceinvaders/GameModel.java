@@ -29,6 +29,7 @@ public class GameModel extends Observable implements ActionListener {
     private PlayerControler player;
     private ArrayList<BufferedImage> images;
     private Timer playerTimer;
+    private Timer invaderTimer;
     private Timer randomShipTimer;
     private int bonusShipInterval;
 
@@ -59,7 +60,16 @@ public class GameModel extends Observable implements ActionListener {
                 }
         );
         playerTimer.setRepeats(true);
-        playerTimer.start();
+        playerTimer.start();        
+        invaderTimer = new Timer(500, null);
+        invaderTimer.addActionListener(
+                ae -> {
+                    moveInvaders();
+                    hitDetection();
+                }
+        );
+        invaderTimer.setRepeats(true);
+        invaderTimer.start();
         modImages();
         createInvaders();
     }
@@ -102,41 +112,60 @@ public class GameModel extends Observable implements ActionListener {
     	int columns = 11;
     	int ySpacer = 50;
     	int xSpacer = 45;
-    	int x = -270;
+    	int x = - 290;
     	int y = 180;
      	for (int i = rows; i > 0; i--) {
     		for (int j = 0; j < columns; j++) {
-    			x = x +  xSpacer;
+    			x = x + xSpacer;
     			if (i == 5) {
     				Octopus invader = new Octopus(images.get(5), images.get(6), x, y);
+    				invader.setRow(5);    				
     				invaders.add(invader);
     			}
-    			if (i == 4 || i == 3) {
+    			if (i == 4 ) {
     				Crab invader = new Crab(images.get(1), images.get(2), x, y);
+    				invader.setRow(4);    				
     				invaders.add(invader);
     			}
-    			if (i == 2 || i == 1) {
-    				JellyFish invader = new JellyFish(images.get(3), images.get(4), x, y);
+    			if (i == 3) {
+    				Crab invader = new Crab(images.get(1), images.get(2), x, y);
+    				invader.setRow(3);
     				invaders.add(invader);
+    				
+    			}
+    			if (i == 2) {
+    				JellyFish invader = new JellyFish(images.get(3), images.get(4), x, y);
+    				invader.setRow(2);
+    				invaders.add(invader);    			 	
+    			}
+    			if (i == 1) {
+    				JellyFish invader = new JellyFish(images.get(3), images.get(4), x, y);
+    				invader.setRow(1);
+    				invaders.add(invader);    				
     			}
     			System.out.println("X: " + x + " Y: " + y);
     		}
 			y = y - ySpacer;
-			x = -270;
+			x = -290;
     	}
     	
     }
-    public void updatePositions() {
+    public void moveInvaders() {
         if (this.invaders.size() != 0) {
             for (int i = 0; i < this.invaders.size(); i++) {
                 if (this.getInvaders().get(i).isAlive()) {
-                    this.invaders.get(i).updatePosition();
+                	this.invaders.get(i).updatePosition();
                 } else {
                     this.invaders.remove(i);
                 }
             }
         }
-        if (this.missiles.size() != 0) {
+        player.updatePosition();
+    	setChanged();
+    	notifyObservers();
+    }
+    public void updatePositions() {
+    	if (this.missiles.size() != 0) {
         	for (int i = 0; i < getMissiles().size(); i++) {
         		if (getMissiles().get(i).getY() > 257) {
         			this.missiles.remove(i);        			
@@ -144,11 +173,8 @@ public class GameModel extends Observable implements ActionListener {
         			getMissiles().get(i).updatePosition();
         		}
         	}
-        	
-
         }
         if (this.isDead.size() != 0) {
-
         }
         player.updatePosition();
     	setChanged();
