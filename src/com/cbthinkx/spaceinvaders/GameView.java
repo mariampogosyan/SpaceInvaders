@@ -14,6 +14,7 @@ import java.util.Observer;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import com.cbthinkx.spaceinvaders.invaders.Ship;
 import com.cbthinkx.spaceinvaders.missiles.Missiles;
 
 public class GameView extends JPanel implements Observer {
@@ -63,16 +64,21 @@ public class GameView extends JPanel implements Observer {
 		for (int i = 0; i < getModel().getInvaders().size(); i++) {
 			int x = getModel().getInvaders().get(i).getX();
 			int y = getModel().getInvaders().get(i).getY();
-            int width1 = getModel().getInvaders().get(i).getCurrentFrame().getWidth();
-            int height = getModel().getInvaders().get(i).getCurrentFrame().getHeight();
-            Rectangle2D in = new Rectangle2D.Float(
-                    getModel().getInvaders().get(i).getX() - (width1/2),
-                    getModel().getInvaders().get(i).getY(),
-                    width1,
-                    height
-            );
-            g2d.draw(in);
-			g2d.drawImage(getModel().getInvaders().get(i).getCurrentFrame(), null, x - (width1 / 2), y);
+			if (x < 350) {
+				int width = getModel().getInvaders().get(i).getCurrentFrame().getWidth();
+				int height = getModel().getInvaders().get(i).getCurrentFrame().getHeight();
+				Rectangle2D in = new Rectangle2D.Float(
+						x - (width/2),
+						y,
+						width,
+						height
+				);
+				g2d.draw(in);
+				g2d.drawImage(getModel().getInvaders().get(i).getCurrentFrame(), null, x - (width / 2), y);
+			} else {
+				if (getModel().getInvaders().get(i) instanceof Ship) getModel().setBonusShipFlying(false);
+				getModel().getInvaders().remove(i);
+			}
 		}
 		return g2d;
 	}

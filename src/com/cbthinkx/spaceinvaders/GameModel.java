@@ -16,7 +16,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Observable;
 import java.util.Random;
 
@@ -25,7 +24,6 @@ import java.util.Random;
 public class GameModel extends Observable implements ActionListener {
     private ArrayList<Invaders> invaders;
     private ArrayList<Missiles> missiles;
-    private ArrayList<Objects> isDead;
     private ArrayList<Explosion> explosions;
     private PlayerControler player;
     private ArrayList<BufferedImage> images;
@@ -33,20 +31,24 @@ public class GameModel extends Observable implements ActionListener {
     private Timer invaderTimer;
     private Timer randomShipTimer;
     private int bonusShipInterval;
+    private boolean bonusShipFlying;
 
     public GameModel(PlayerControler player, ArrayList<BufferedImage> img) {
         this.player = player;
         this.invaders = new ArrayList<>();
         this.missiles = new ArrayList<>();
-        this.isDead = new ArrayList<>();
         this.explosions = new ArrayList<>();
         this.images = img;
+        this.bonusShipFlying = false;
         this.bonusShipInterval = new Random().nextInt(50000);
         randomShipTimer = new Timer(bonusShipInterval, null);
         randomShipTimer.addActionListener(
                 ae -> {
                     Ship newShip = new Ship(images.get(0), -400, 250);
-                    invaders.add(newShip);
+                    if (!bonusShipFlying) {
+                        invaders.add(newShip);
+                        bonusShipFlying = true;
+                    }
                     bonusShipInterval = new Random().nextInt(50000);
                     while (!(bonusShipInterval > 10000)) bonusShipInterval = new Random().nextInt(50000);
                     randomShipTimer.setDelay(bonusShipInterval);
@@ -77,7 +79,6 @@ public class GameModel extends Observable implements ActionListener {
     }
     private void modImages() {
     	for (int x = 0; x < images.size(); x++) {
-    		int width = images.get(x).getWidth();
     		AffineTransform transform = new AffineTransform();
     		transform.scale(0.35, 0.35);
     		BufferedImage bufferedImage = images.get(x);
@@ -103,6 +104,7 @@ public class GameModel extends Observable implements ActionListener {
                     getPlayer().increeseScore(getInvaders().get(i).getScore());
                     Explosion explode = new Explosion(getInvaders().get(i).getX(), getInvaders().get(i).getY(), images.get(7));
                     getExplosions().add(explode);
+                    if (getInvaders().get(i) instanceof Ship) bonusShipFlying = false;
                     getMissiles().remove(m);
                     getInvaders().remove(i);
                     break;
@@ -143,8 +145,8 @@ public class GameModel extends Observable implements ActionListener {
     				invaders.add(invader);    			 	
     			}
     			if (i == 1) {
-    				JellyFish invader = new JellyFish(images.get(3), images.get(4), x, y);
-    				invader.setRow(1);
+                    JellyFish invader = new JellyFish(images.get(3), images.get(4), x, y);
+                    invader.setRow(1);
     				invaders.add(invader);    				
     			}
     			System.out.println("X: " + x + " Y: " + y);
@@ -157,10 +159,8 @@ public class GameModel extends Observable implements ActionListener {
     public void moveInvaders() {
         if (this.invaders.size() != 0) {
             for (int i = 0; i < this.invaders.size(); i++) {
-                if (this.getInvaders().get(i).isAlive()) {
-                	this.invaders.get(i).updatePosition();
-                } else {
-                    this.invaders.remove(i);
+                if (this.getInvaders().get(i).isAlive() && !(this.getInvaders().get(i) instanceof Ship)) {
+                    this.invaders.get(i).updatePosition();
                 }
             }
         }
@@ -178,7 +178,12 @@ public class GameModel extends Observable implements ActionListener {
         		}
         	}
         }
-        if (this.isDead.size() != 0) {
+        if (this.invaders.size() != 0) {
+            for (int i = 0; i < this.invaders.size(); i++) {
+                if (this.getInvaders().get(i) instanceof Ship) {
+                    this.getInvaders().get(i).updatePosition();
+                }
+            }
         }
         player.updatePosition();
     	setChanged();
@@ -202,10 +207,13 @@ public class GameModel extends Observable implements ActionListener {
     public ArrayList<Invaders> getInvaders() {
         return invaders;
     }
-    public ArrayList<Objects> getIsDead() {
-        return isDead;
-    }
     public ArrayList<Explosion> getExplosions() {
         return explosions;
+    }
+    public boolean isBonusShipFlying() {
+        return bonusShipFlying;
+    }
+    public void setBonusShipFlying(boolean bonusShipFlying) {
+        this.bonusShipFlying = bonusShipFlying;
     }
 }

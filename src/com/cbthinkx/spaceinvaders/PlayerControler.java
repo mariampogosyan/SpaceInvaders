@@ -46,7 +46,6 @@ public class PlayerControler extends Observable {
     }
     public void updatePosition() {
         if (this.direction == Direction.RIGHT) {
-//            System.out.println("RIGHT");
             this.x = x + 5;
             if (x + (playerShip.getWidth()/2) > 325) {
                 this.x = 325 - (playerShip.getWidth()/2);
@@ -55,7 +54,6 @@ public class PlayerControler extends Observable {
             notifyObservers();
         }
         if (this.direction == Direction.LEFT) {
-//            System.out.println("LEFT");
             this.x = x - 5;
             if (x - (playerShip.getWidth()/2) < -325) {
                 this.x = -325 + (playerShip.getWidth()/2);

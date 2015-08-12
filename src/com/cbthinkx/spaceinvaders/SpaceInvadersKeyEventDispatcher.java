@@ -3,9 +3,6 @@ package com.cbthinkx.spaceinvaders;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-/**
- * Created by Robert on 7/29/15.
- */
 public class SpaceInvadersKeyEventDispatcher implements KeyEventDispatcher {
     private GameModel model;
     private GameView view;
