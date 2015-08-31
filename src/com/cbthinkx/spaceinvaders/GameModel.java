@@ -186,8 +186,22 @@ public class GameModel extends Observable implements ActionListener {
             }
         }
         player.updatePosition();
+        if (player.getLives() == 0) {
+            gameOver(player.getScore());
+        }
+        if (invaders.isEmpty()) {
+            roundWon();
+        }
     	setChanged();
     	notifyObservers();
+    }
+    public void gameOver(int score) {
+
+    }
+    public void roundWon() {
+        player.nextRound();
+        createInvaders();
+        player.setLives(player.getLives() + 1);
     }
     
 	@Override

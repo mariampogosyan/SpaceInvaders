@@ -10,6 +10,7 @@ public class PlayerControler extends Observable {
     private boolean canFire;
     private int score;
     private int highScore;
+    private int round;
     private int lives;
     private Direction direction;
     private int x;
@@ -74,6 +75,9 @@ public class PlayerControler extends Observable {
             this.highScore = this.score;
         }
     }
+    public void nextRound() {
+        this.round = this.round++;
+    }
     public int getY() {
         return y;
     }
@@ -98,7 +102,9 @@ public class PlayerControler extends Observable {
     public void setLives(int lives) {
         this.lives = lives;
     }
-
+    public int getRound() {
+        return round;
+    }
     @Override
     public String toString() {
         return "PlayerControler{" +

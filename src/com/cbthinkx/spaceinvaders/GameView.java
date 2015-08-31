@@ -193,7 +193,7 @@ public class GameView extends JPanel implements Observer {
 						missile = new Missiles(getModel().getPlayer().getX() - 1, getModel().getPlayer().getY() + 30);
 						getModel().getMissiles().add(missile);
 						getModel().getPlayer().setCanFire(false);
-						t = new Timer(1000,
+						t = new Timer(500,
 								ae -> {
 									getModel().getPlayer().setCanFire(true);
 								});
